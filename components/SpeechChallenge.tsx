@@ -1,11 +1,12 @@
-
 import React from 'react';
-import { LetterInfo, LetterCase } from '../types';
+import { LetterInfo, NumberInfo, LetterCase } from '../types';
 import { assetService } from '../services/assets';
 import ProgressBar from './ProgressBar';
 
+type TargetInfo = (LetterInfo & { value?: number }) | (NumberInfo & { char?: string });
+
 interface SpeechChallengeProps {
-    quizTarget: LetterInfo | null;
+    quizTarget: TargetInfo | null;
     quizFeedback: 'correct' | 'wrong' | null;
     isListening: boolean;
     speechTranscript: string;
@@ -13,6 +14,8 @@ interface SpeechChallengeProps {
     onStartListening: () => void;
     onStopListening: () => void;
     letterCase: LetterCase;
+    targetType: 'ALPHABET' | 'NUMBER';
+    totalQuestions: number;
 }
 
 const SpeechChallenge: React.FC<SpeechChallengeProps> = ({
@@ -23,24 +26,44 @@ const SpeechChallenge: React.FC<SpeechChallengeProps> = ({
     quizQueueLength,
     onStartListening,
     onStopListening,
-    letterCase
+    letterCase,
+    targetType,
+    totalQuestions
 }) => {
     const [showHint, setShowHint] = React.useState(false);
     const isCorrect = quizFeedback === 'correct';
     const isWrong = quizFeedback === 'wrong';
 
+    const getIdentifier = (target: TargetInfo | null) => {
+        if (!target) return '';
+        return targetType === 'NUMBER' && 'value' in target ? target.value.toString() : (target as any).char;
+    };
+
+    const getDisplayValue = (target: TargetInfo | null) => {
+        if (!target) return '';
+        if (targetType === 'NUMBER' && 'value' in target) return target.value;
+        const char = 'char' in target ? target.char : '';
+        return letterCase === LetterCase.LOWER ? char.toLowerCase() : char;
+    };
+
+    const getImagePath = (target: TargetInfo) => {
+        if (targetType === 'NUMBER' && 'value' in target) return assetService.getNumberImagePath(target.value);
+        return assetService.getImagePath((target as any).char);
+    };
+
     // Reset hint when target changes
     React.useEffect(() => {
         setShowHint(false);
-    }, [quizTarget?.char]);
+    }, [getIdentifier(quizTarget)]);
 
     const isFlipped = isCorrect || showHint;
+    const progress = totalQuestions - quizQueueLength;
 
     return (
         <div className="w-full h-full flex flex-col items-center justify-between pb-12 pt-4 px-4 select-none">
             <ProgressBar
-                current={26 - quizQueueLength}
-                total={26}
+                current={progress}
+                total={totalQuestions}
                 className="mt-2"
             />
 
@@ -52,9 +75,9 @@ const SpeechChallenge: React.FC<SpeechChallengeProps> = ({
                 >
                     <div className={`relative w-full h-full transition-all duration-700 preserve-3d ${isFlipped ? 'rotate-y-180' : ''}`}>
 
-                        {/* Front: The Letter */}
+                        {/* Front: The Item */}
                         <div className={`absolute inset-0 backface-hidden flex items-center justify-center rounded-[3rem] shadow-[0_15px_40px_rgba(0,0,0,0.15)] text-[10rem] md:text-[14rem] font-kids text-white ${quizTarget?.color} border-8 border-white`}>
-                            {letterCase === LetterCase.LOWER ? quizTarget?.char.toLowerCase() : quizTarget?.char}
+                            {getDisplayValue(quizTarget)}
                             {isListening && (
                                 <div className="absolute inset-0 rounded-[2.6rem] ring-[12px] ring-white/40 animate-pulse" />
                             )}
@@ -65,9 +88,9 @@ const SpeechChallenge: React.FC<SpeechChallengeProps> = ({
                             {quizTarget && (
                                 <>
                                     <img
-                                        src={assetService.getImagePath(quizTarget.char)}
+                                        src={getImagePath(quizTarget)}
                                         alt={quizTarget.word}
-                                        className="w-full h-full object-cover"
+                                        className="w-full h-full object-cover bg-white"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end justify-center pb-6">
                                         <span className="text-white text-4xl md:text-5xl font-kids drop-shadow-lg">{quizTarget.word}</span>

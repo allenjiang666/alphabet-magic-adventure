@@ -1,17 +1,21 @@
 import React from 'react';
-import { LetterInfo, LetterCase } from '../types';
+import { LetterInfo, NumberInfo, LetterCase } from '../types';
 import { assetService } from '../services/assets';
 import ProgressBar from './ProgressBar';
 
+type TargetInfo = (LetterInfo & { value?: number }) | (NumberInfo & { char?: string });
+
 interface QuizGameProps {
     quizQueueLength: number;
-    quizTarget: LetterInfo | null;
-    quizOptions: LetterInfo[];
+    quizTarget: TargetInfo | null;
+    quizOptions: TargetInfo[];
     quizFeedback: 'correct' | 'wrong' | null;
     lastSelectedChar: string | null;
-    onChoice: (choice: LetterInfo) => void;
+    onChoice: (choice: any) => void;
     onReplayAudio: () => void;
     letterCase: LetterCase;
+    targetType: 'ALPHABET' | 'NUMBER';
+    totalQuestions: number;
 }
 
 const QuizGame: React.FC<QuizGameProps> = ({
@@ -22,12 +26,33 @@ const QuizGame: React.FC<QuizGameProps> = ({
     lastSelectedChar,
     onChoice,
     onReplayAudio,
-    letterCase
+    letterCase,
+    targetType,
+    totalQuestions
 }) => {
+    const getDisplayValue = (option: TargetInfo) => {
+        if (targetType === 'NUMBER' && 'value' in option) return option.value;
+        const char = 'char' in option ? option.char : '';
+        return letterCase === LetterCase.LOWER ? char.toLowerCase() : char;
+    };
+
+    const getIdentifier = (option: TargetInfo) => {
+        return targetType === 'NUMBER' && 'value' in option ? option.value.toString() : (option as any).char;
+    };
+
+    const getImagePath = (option: TargetInfo) => {
+        if (targetType === 'NUMBER' && 'value' in option) return assetService.getNumberImagePath(option.value);
+        return assetService.getImagePath((option as any).char);
+    };
+
+    const progress = totalQuestions - quizQueueLength;
+
     return (
         <div className="w-full h-full max-w-4xl flex flex-col items-center justify-between">
             <div className="flex flex-row items-center justify-center gap-4 mt-2">
-                <p className="text-xl md:text-3xl font-kids text-gray-700">Which letter do you hear?</p>
+                <p className="text-xl md:text-3xl font-kids text-gray-700">
+                    Which {targetType === 'NUMBER' ? 'number' : 'letter'} do you hear?
+                </p>
                 <button
                     onClick={onReplayAudio}
                     className="bg-orange-400 hover:bg-orange-500 text-white p-3 rounded-full shadow-lg transition-all active:scale-90"
@@ -39,36 +64,40 @@ const QuizGame: React.FC<QuizGameProps> = ({
             </div>
 
             <div className="grid grid-cols-2 gap-4 w-full max-w-lg flex-grow py-4">
-                {quizOptions.map((option) => (
-                    <button
-                        key={option.char}
-                        onClick={() => onChoice(option)}
-                        disabled={!!quizFeedback}
-                        className={`
-              ${option.color} rounded-2xl shadow-xl flex items-center justify-center text-white text-6xl font-kids transform transition-all 
-              ${!quizFeedback ? 'hover:scale-105 active:scale-95' : ''}
-              ${quizFeedback === 'correct' && option.char === quizTarget?.char ? 'ring-8 ring-green-400 animate-bounce z-10' : ''}
-              ${quizFeedback === 'wrong' && option.char === lastSelectedChar ? 'ring-8 ring-red-400' : ''}
-              ${quizFeedback && option.char !== lastSelectedChar ? 'opacity-50 grayscale' : ''}
-              overflow-hidden
-            `}
-                    >
-                        {quizFeedback && option.char === lastSelectedChar ? (
-                            <div className="relative w-full h-full flex items-center justify-center">
-                                <img
-                                    src={assetService.getImagePath(option.char)}
-                                    alt={option.word}
-                                    className="w-full h-full object-cover"
-                                />
-                                <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-                                    <span className="text-white text-4xl font-kids drop-shadow-lg">
-                                        {letterCase === LetterCase.LOWER ? option.char.toLowerCase() : option.char}
-                                    </span>
+                {quizOptions.map((option) => {
+                    const id = getIdentifier(option);
+                    const isTarget = id === getIdentifier(quizTarget!);
+                    return (
+                        <button
+                            key={id}
+                            onClick={() => onChoice(option)}
+                            disabled={!!quizFeedback}
+                            className={`
+                                ${option.color} rounded-2xl shadow-xl flex items-center justify-center text-white text-6xl font-kids transform transition-all 
+                                ${!quizFeedback ? 'hover:scale-105 active:scale-95' : ''}
+                                ${quizFeedback === 'correct' && isTarget ? 'ring-8 ring-green-400 animate-bounce z-10' : ''}
+                                ${quizFeedback === 'wrong' && id === lastSelectedChar ? 'ring-8 ring-red-400' : ''}
+                                ${quizFeedback && id !== lastSelectedChar ? 'opacity-50 grayscale' : ''}
+                                overflow-hidden
+                            `}
+                        >
+                            {quizFeedback && id === lastSelectedChar ? (
+                                <div className="relative w-full h-full flex items-center justify-center">
+                                    <img
+                                        src={getImagePath(option)}
+                                        alt={option.word}
+                                        className="w-full h-full object-cover"
+                                    />
+                                    <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                                        <span className="text-white text-4xl font-kids drop-shadow-lg">
+                                            {getDisplayValue(option)}
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
-                        ) : (letterCase === LetterCase.LOWER ? option.char.toLowerCase() : option.char)}
-                    </button>
-                ))}
+                            ) : getDisplayValue(option)}
+                        </button>
+                    );
+                })}
             </div>
 
             <div className="w-full flex flex-col items-center">
@@ -79,9 +108,9 @@ const QuizGame: React.FC<QuizGameProps> = ({
                 ) : <div className="h-8" />}
 
                 <ProgressBar
-                    current={26 - quizQueueLength}
-                    total={26}
-                    label={`${26 - quizQueueLength} / 26 letters done!`}
+                    current={progress}
+                    total={totalQuestions}
+                    label={`${progress} / ${totalQuestions} done!`}
                     className="mt-6 mb-2"
                 />
             </div>

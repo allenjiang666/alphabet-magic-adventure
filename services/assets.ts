@@ -69,6 +69,14 @@ export const assetService = {
         return this.playPcm(`${BASE_URL}assets/audio/${char}.pcm`);
     },
 
+    getNumberImagePath(value: number): string {
+        return `${BASE_URL}assets/numbers/images/${value}.png`;
+    },
+
+    playNumberSound(value: number) {
+        return this.playPcm(`${BASE_URL}assets/numbers/audio/${value}.pcm`);
+    },
+
     playCommonSound(name: string) {
         return this.playPcm(`${BASE_URL}assets/common/${name}.pcm`);
     }

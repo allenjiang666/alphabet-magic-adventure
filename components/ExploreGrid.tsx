@@ -10,8 +10,8 @@ interface ExploreGridProps {
 
 const ExploreGrid: React.FC<ExploreGridProps> = ({ onLetterSelect, letterCase }) => {
     return (
-        <div className="h-full w-full overflow-y-auto px-2 pb-4 scrollbar-hide">
-            <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-2 md:gap-4 max-w-6xl mx-auto">
+        <div className="w-full px-2">
+            <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-9 gap-3 md:gap-4 max-w-7xl mx-auto">
                 {ALPHABET.map((item) => (
                     <button
                         key={item.char}

@@ -1,5 +1,4 @@
-
-import { LetterInfo } from './types';
+import { LetterInfo, NumberInfo } from './types';
 
 export const ALPHABET: LetterInfo[] = [
   { char: 'A', word: 'Apple', color: 'bg-red-400', imagePrompt: 'A cute red apple with a happy face, cartoon style' },
@@ -28,4 +27,18 @@ export const ALPHABET: LetterInfo[] = [
   { char: 'X', word: 'Xylophone', color: 'bg-fuchsia-500', imagePrompt: 'A colorful xylophone with wooden sticks, cartoon style' },
   { char: 'Y', word: 'Yo-yo', color: 'bg-rose-500', imagePrompt: 'A spinning red yo-yo on a string, cartoon style' },
   { char: 'Z', word: 'Zebra', color: 'bg-slate-800', imagePrompt: 'A zebra with black and white stripes, cartoon style' },
+];
+
+export const NUMBERS: NumberInfo[] = [
+  { value: 0, word: 'Zero', color: 'bg-slate-400', imagePrompt: 'A smooth, round brown egg standing upright on a white background, cartoon style, simple and clean.', sentence: 'Zero. Zero is an egg.' },
+  { value: 1, word: 'One', color: 'bg-red-400', imagePrompt: 'A yellow pencil standing perfectly straight up, cartoon style, simple and clean.', sentence: 'One. One is a pencil.' },
+  { value: 2, word: 'Two', color: 'bg-orange-400', imagePrompt: 'A yellow duck swimming, its curved neck and body forming the shape of the number two, cartoon style.', sentence: 'Two. Two is a duck.' },
+  { value: 3, word: 'Three', color: 'bg-yellow-400', imagePrompt: 'A friendly human ear shown from the side, its curves forming the shape of the number three, cartoon style.', sentence: 'Three. Three is an ear.' },
+  { value: 4, word: 'Four', color: 'bg-green-400', imagePrompt: 'A red triangular flag on a wooden pole, forming the shape of the number four, cartoon style.', sentence: 'Four. Four is a flag.' },
+  { value: 5, word: 'Five', color: 'bg-blue-400', imagePrompt: 'A silver hook for hanging things, its curve forming the bottom of the number five, cartoon style.', sentence: 'Five. Five is a hook.' },
+  { value: 6, word: 'Six', color: 'bg-purple-400', imagePrompt: 'A blue whistle, its round base and curved top forming the shape of the number six, cartoon style.', sentence: 'Six. Six is a whistle.' },
+  { value: 7, word: 'Seven', color: 'bg-pink-400', imagePrompt: 'A sickle with a wooden handle and sharp blade, forming the shape of the number seven, cartoon style.', sentence: 'Seven. Seven is a sickle.' },
+  { value: 8, word: 'Eight', color: 'bg-indigo-400', imagePrompt: 'A bright orange gourd hanging from a green vine, its two round parts forming the shape of the number eight, cartoon style.', sentence: 'Eight. Eight is a gourd.' },
+  { value: 9, word: 'Nine', color: 'bg-teal-400', imagePrompt: 'A wooden spoon with a round bowl at the top and straight handle, forming the shape of the number nine, cartoon style.', sentence: 'Nine. Nine is a spoon.' },
+  { value: 10, word: 'Ten', color: 'bg-rose-400', imagePrompt: 'A yellow pencil standing next to a round brown egg, forming the number ten together, cartoon style.', sentence: 'Ten. Ten is a pencil and egg.' },
 ];
