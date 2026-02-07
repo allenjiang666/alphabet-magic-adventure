@@ -1,0 +1,31 @@
+
+import { LetterInfo } from './types';
+
+export const ALPHABET: LetterInfo[] = [
+  { char: 'A', word: 'Apple', color: 'bg-red-400', imagePrompt: 'A cute red apple with a happy face, cartoon style' },
+  { char: 'B', word: 'Bear', color: 'bg-orange-400', imagePrompt: 'A fuzzy brown teddy bear waving hello, cartoon style' },
+  { char: 'C', word: 'Cat', color: 'bg-yellow-400', imagePrompt: 'A fluffy ginger cat playing with a ball of yarn, cartoon style' },
+  { char: 'D', word: 'Dog', color: 'bg-green-400', imagePrompt: 'A spotted puppy wagging its tail, cartoon style' },
+  { char: 'E', word: 'Elephant', color: 'bg-blue-400', imagePrompt: 'A friendly blue elephant spraying water with its trunk, cartoon style' },
+  { char: 'F', word: 'Frog', color: 'bg-emerald-400', imagePrompt: 'A happy green frog sitting on a lily pad, cartoon style' },
+  { char: 'G', word: 'Giraffe', color: 'bg-amber-400', imagePrompt: 'A tall giraffe eating leaves from a tree, cartoon style' },
+  { char: 'H', word: 'Hippo', color: 'bg-purple-400', imagePrompt: 'A purple hippo swimming in a pond, cartoon style' },
+  { char: 'I', word: 'Ice Cream', color: 'bg-pink-400', imagePrompt: 'A giant strawberry ice cream cone with sprinkles, cartoon style' },
+  { char: 'J', word: 'Jellyfish', color: 'bg-indigo-400', imagePrompt: 'A glowing pink jellyfish floating in the ocean, cartoon style' },
+  { char: 'K', word: 'Kangaroo', color: 'bg-orange-500', imagePrompt: 'A kangaroo with a baby in its pouch jumping, cartoon style' },
+  { char: 'L', word: 'Lion', color: 'bg-yellow-500', imagePrompt: 'A majestic lion with a big fluffy mane, cartoon style' },
+  { char: 'M', word: 'Monkey', color: 'bg-amber-600', imagePrompt: 'A silly monkey swinging from a vine with a banana, cartoon style' },
+  { char: 'N', word: 'Night', color: 'bg-blue-900', imagePrompt: 'A crescent moon and stars in a dark blue sky, cartoon style' },
+  { char: 'O', word: 'Orange', color: 'bg-lime-600', imagePrompt: 'A juicy round orange with a green leaf and a happy face, cartoon style' },
+  { char: 'P', word: 'Penguin', color: 'bg-cyan-400', imagePrompt: 'A cute penguin sliding on ice, cartoon style' },
+  { char: 'Q', word: 'Queen', color: 'bg-purple-600', imagePrompt: 'A queen with a golden crown and a shiny dress, cartoon style' },
+  { char: 'R', word: 'Rabbit', color: 'bg-zinc-400', imagePrompt: 'A white bunny rabbit eating a carrot, cartoon style' },
+  { char: 'S', word: 'Snake', color: 'bg-yellow-500', imagePrompt: 'A friendly green snake wiggling in the grass, cartoon style' },
+  { char: 'T', word: 'Tiger', color: 'bg-orange-600', imagePrompt: 'A friendly tiger with orange and black stripes, cartoon style' },
+  { char: 'U', word: 'Umbrella', color: 'bg-red-500', imagePrompt: 'A colorful rainbow umbrella, cartoon style' },
+  { char: 'V', word: 'Violin', color: 'bg-stone-600', imagePrompt: 'A shiny wooden violin with a bow, cartoon style' },
+  { char: 'W', word: 'Whale', color: 'bg-blue-500', imagePrompt: 'A big blue whale blowing water from its blowhole, cartoon style' },
+  { char: 'X', word: 'Xylophone', color: 'bg-fuchsia-500', imagePrompt: 'A colorful xylophone with wooden sticks, cartoon style' },
+  { char: 'Y', word: 'Yo-yo', color: 'bg-rose-500', imagePrompt: 'A spinning red yo-yo on a string, cartoon style' },
+  { char: 'Z', word: 'Zebra', color: 'bg-slate-800', imagePrompt: 'A zebra with black and white stripes, cartoon style' },
+];
