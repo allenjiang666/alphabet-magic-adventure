@@ -13,6 +13,7 @@ import SpeechChallenge from './components/SpeechChallenge';
 import ExploreGrid from './components/ExploreGrid';
 import LetterDetail from './components/LetterDetail';
 import WinModal from './components/WinModal';
+import ReloadPrompt from './components/ReloadPrompt';
 
 const App: React.FC = () => {
   const [state, setState] = useState<GameState>({
@@ -344,6 +345,8 @@ const App: React.FC = () => {
         onClose={() => setShowWinModal(false)}
         message={winMessage}
       />
+
+      <ReloadPrompt />
 
       <style>{`
         .scrollbar-hide::-webkit-scrollbar { display: none; }
