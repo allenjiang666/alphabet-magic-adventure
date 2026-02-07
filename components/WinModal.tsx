@@ -1,6 +1,6 @@
-
 import React, { useEffect } from 'react';
 import confetti from 'canvas-confetti';
+import { assetService } from '../services/assets';
 
 interface WinModalProps {
     show: boolean;
@@ -67,7 +67,7 @@ const WinModal: React.FC<WinModalProps> = ({ show, onClose, message }) => {
             <div className="bg-white rounded-[3rem] p-8 md:p-12 shadow-2xl border-8 border-orange-400 max-w-sm w-full text-center transform animate-in zoom-in duration-300">
                 <div className="relative mb-6">
                     <img
-                        src="/assets/common/trophy.png"
+                        src={assetService.getCommonImagePath('trophy')}
                         alt="Trophy"
                         className="w-48 h-48 mx-auto animate-bounce-slow"
                     />
