@@ -152,42 +152,52 @@ const App: React.FC = () => {
 
       // Expanded mapping of letters to common phonetic transcriptions for better accuracy
       const phoneticAliases: Record<string, string[]> = {
-        'a': ['hey', 'ay', 'a', 'eh', 'aa', 'hey'],
-        'b': ['be', 'bee', 'beee', 'bee-bee'],
-        'c': ['see', 'sea', 'si', 'cee', 'seee'],
-        'd': ['dee', 'deee', 'di'],
-        'e': ['ee', 'eee', 'e'],
-        'f': ['ef', 'eff', 'efff'],
-        'g': ['gee', 'geee', 'ji'],
-        'h': ['aitch', 'edge', 'ech', 'aych'],
-        'i': ['eye', 'i', 'ai'],
-        'j': ['jay', 'jei'],
-        'k': ['kay', 'kei', 'que', 'kayy'],
-        'l': ['el', 'ell', 'el-el'],
-        'm': ['em', 'emm'],
-        'n': ['en', 'enn'],
-        'o': ['oh', 'o', 'owe', 'ooo'],
-        'p': ['pee', 'peee', 'pi'],
-        'q': ['cue', 'queue', 'kyu'],
-        'r': ['are', 'our', 'or', 'ar'],
-        's': ['es', 'ess', 'is', 'yes', 'si', 'esss'],
-        't': ['tee', 'tea', 'ti', 'teee'],
-        'u': ['you', 'u', 'yu'],
-        'v': ['vee', 'veee', 'vi'],
+        'a': ['hey', 'ay', 'a', 'eh', 'aa', 'aye', 'eight', 'hie'],
+        'b': ['be', 'bee', 'beee', 'bee-bee', 'me'],
+        'c': ['see', 'sea', 'si', 'cee', 'seee', 'she'],
+        'd': ['dee', 'deee', 'di', 'the', 'tea'],
+        'e': ['ee', 'eee', 'e', 'he', 'eat'],
+        'f': ['ef', 'eff', 'efff', 'if'],
+        'g': ['gee', 'geee', 'ji', 'j'],
+        'h': ['aitch', 'edge', 'ech', 'aych', 'hey', 'age'],
+        'i': ['eye', 'i', 'ai', 'my', 'hi'],
+        'j': ['jay', 'jei', 'hey'],
+        'k': ['kay', 'kei', 'que', 'kayy', 'ok'],
+        'l': ['el', 'ell', 'el-el', 'al', 'all'],
+        'm': ['em', 'emm', 'am', 'and'],
+        'n': ['en', 'enn', 'and', 'in'],
+        'o': ['oh', 'o', 'owe', 'ooo', 'all'],
+        'p': ['pee', 'peee', 'pi', 'pea'],
+        'q': ['cue', 'queue', 'kyu', 'you'],
+        'r': ['are', 'our', 'or', 'ar', 'her'],
+        's': ['es', 'ess', 'is', 'yes', 'si', 'esss', 'ice'],
+        't': ['tee', 'tea', 'ti', 'teee', 'to', 'two'],
+        'u': ['you', 'u', 'yu', 'to'],
+        'v': ['vee', 'veee', 'vi', 'we', 'the'],
         'w': ['double u', 'w', 'dubya'],
-        'x': ['ex', 'eks'],
-        'y': ['why', 'y', 'wai'],
-        'z': ['zee', 'zed', 'zi', 'zeee']
+        'x': ['ex', 'eks', 'acts'],
+        'y': ['why', 'y', 'wai', 'hi'],
+        'z': ['zee', 'zed', 'zi', 'zeee', 'the']
       };
 
-      const isFullPhrase = transcript.includes(`${targetChar} for ${targetWord}`) ||
-        transcript.includes(`${targetChar} for`) ||
-        (transcript.includes(`for ${targetWord}`) && transcript.includes(targetChar));
+      const words = transcript.split(/\s+/);
 
-      const isCharMatch = transcript === targetChar || (phoneticAliases[targetChar]?.includes(transcript));
-      const isWordMatch = transcript === targetWord || transcript.includes(targetWord);
+      // 1. Check for Character Match (direct or phonetic)
+      const hasCharMatch = words.some(w =>
+        w === targetChar ||
+        phoneticAliases[targetChar]?.includes(w)
+      );
 
-      if (isFullPhrase || isCharMatch || isWordMatch) {
+      // 2. Check for Word Match
+      const hasWordMatch = words.some(w => w === targetWord);
+
+      // 3. Full Phrase Logic (Flexible)
+      // We consider it correct if they say BOTH the letter and the word, 
+      // OR if they say the specific "[letter] for [word]" pattern.
+      const isFullPhrase = (hasCharMatch && hasWordMatch) ||
+        transcript.includes(`${targetChar} for ${targetWord}`);
+
+      if (isFullPhrase || hasCharMatch || hasWordMatch) {
         setQuizFeedback('correct');
         setScore(s => s + 1);
         confetti({
