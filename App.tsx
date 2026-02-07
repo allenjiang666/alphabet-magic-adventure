@@ -41,9 +41,11 @@ const App: React.FC = () => {
   const [winMessage, setWinMessage] = useState('');
   const quizTargetRef = useRef<LetterInfo | null>(quizTarget);
   const quizQueueRef = useRef<string[]>(quizQueue);
+  const quizFeedbackRef = useRef<'correct' | 'wrong' | null>(quizFeedback);
 
   useEffect(() => { quizTargetRef.current = quizTarget; }, [quizTarget]);
   useEffect(() => { quizQueueRef.current = quizQueue; }, [quizQueue]);
+  useEffect(() => { quizFeedbackRef.current = quizFeedback; }, [quizFeedback]);
 
   const setupNextQuizTurn = async (targetChar: string, currentQueue: string[]) => {
     const target = ALPHABET.find(l => l.char === targetChar)!;
@@ -137,12 +139,13 @@ const App: React.FC = () => {
         }
       }
 
-      const transcript = finalTranscript || interimTranscript;
+      const transcript = (finalTranscript || interimTranscript).toLowerCase().trim();
       if (transcript) {
         setSpeechTranscript(transcript);
       }
 
-      if (!finalTranscript) return; // Only process matching logic for final results
+      // If we already have feedback, don't re-process
+      if (quizFeedbackRef.current) return;
 
       const target = quizTargetRef.current;
       const currentQueue = quizQueueRef.current;
@@ -174,31 +177,26 @@ const App: React.FC = () => {
         's': ['es', 'ess', 'is', 'yes', 'si', 'esss', 'ice'],
         't': ['tee', 'tea', 'ti', 'teee', 'to', 'two'],
         'u': ['you', 'u', 'yu', 'to'],
-        'v': ['vee', 'veee', 'vi', 'we', 'the'],
-        'w': ['double u', 'w', 'dubya'],
-        'x': ['ex', 'eks', 'acts'],
-        'y': ['why', 'y', 'wai', 'hi'],
-        'z': ['zee', 'zed', 'zi', 'zeee', 'the']
+        'v': ['vee', 'veee', 'vi', 'we', 'the', 'v'],
+        'w': ['double u', 'w', 'dubya', 'w4', 'water', 'with'],
+        'x': ['ex', 'eks', 'acts', 'x'],
+        'y': ['why', 'y', 'wai', 'hi', 'y'],
+        'z': ['zee', 'zed', 'zi', 'zeee', 'the', 'z']
       };
 
       const words = transcript.split(/\s+/);
 
-      // 1. Check for Character Match (direct or phonetic)
+      // Better matching: Check if the whole transcript contains the target word 
+      // or if any word matches the letter/aliases
+      const hasWordMatch = transcript.includes(targetWord);
+
       const hasCharMatch = words.some(w =>
         w === targetChar ||
         phoneticAliases[targetChar]?.includes(w)
-      );
+      ) || transcript.includes(`${targetChar} `) || transcript.startsWith(`${targetChar} `) || transcript === targetChar;
 
-      // 2. Check for Word Match
-      const hasWordMatch = words.some(w => w === targetWord);
-
-      // 3. Full Phrase Logic (Flexible)
-      // We consider it correct if they say BOTH the letter and the word, 
-      // OR if they say the specific "[letter] for [word]" pattern.
-      const isFullPhrase = (hasCharMatch && hasWordMatch) ||
-        transcript.includes(`${targetChar} for ${targetWord}`);
-
-      if (isFullPhrase || hasCharMatch || hasWordMatch) {
+      // Snappy matching: either they said the word, or the letter, or the combo
+      if (hasWordMatch || hasCharMatch) {
         setQuizFeedback('correct');
         setScore(s => s + 1);
         confetti({
