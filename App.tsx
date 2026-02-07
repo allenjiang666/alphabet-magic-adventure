@@ -279,7 +279,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="h-screen w-full bg-[#fdfcf0] flex flex-col overflow-hidden select-none">
+    <div className="h-screen w-full bg-[#fdfcf0] flex flex-col overflow-hidden select-none pt-[env(safe-area-inset-top)]">
       <Header
         currentMode={state.mode}
         letterCase={state.letterCase}

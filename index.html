@@ -1,10 +1,21 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Alphabet Magic Adventure</title>
+
+  <!-- iOS Home Screen Metadata -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Alphabet">
+  <meta name="theme-color" content="#f97316">
+
+  <!-- Icons & Manifest -->
+  <link rel="apple-touch-icon" href="/alphabet-magic-adventure/assets/common/apple-touch-icon.png">
+  <link rel="manifest" href="/alphabet-magic-adventure/manifest.json">
+
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Handlee&family=Fredoka+One&display=swap" rel="stylesheet">
   <style>
@@ -13,18 +24,28 @@
       overflow-x: hidden;
       background: #fdfcf0;
     }
+
     .font-kids {
       font-family: 'Fredoka One', cursive;
     }
+
     @keyframes bounce-slow {
-      0%, 100% { transform: translateY(-5%); }
-      50% { transform: translateY(0); }
+
+      0%,
+      100% {
+        transform: translateY(-5%);
+      }
+
+      50% {
+        transform: translateY(0);
+      }
     }
+
     .animate-bounce-slow {
       animation: bounce-slow 3s infinite;
     }
   </style>
-<script type="importmap">
+  <script type="importmap">
 {
   "imports": {
     "@google/genai": "https://esm.sh/@google/genai@^1.40.0",
@@ -35,8 +56,10 @@
 }
 </script>
 </head>
+
 <body class="m-0 p-0">
   <div id="root"></div>
-<script type="module" src="/index.tsx"></script>
+  <script type="module" src="/index.tsx"></script>
 </body>
+
 </html>

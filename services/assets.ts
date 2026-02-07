@@ -31,13 +31,15 @@ export async function decodeAudioData(
     return buffer;
 }
 
+const BASE_URL = import.meta.env.BASE_URL || '/';
+
 export const assetService = {
     getImagePath(char: string): string {
-        return `/assets/images/${char}.png`;
+        return `${BASE_URL}assets/images/${char}.png`;
     },
 
     getCommonImagePath(name: string): string {
-        return `/assets/common/${name}.png`;
+        return `${BASE_URL}assets/common/${name}.png`;
     },
 
     async playPcm(url: string): Promise<void> {
@@ -60,10 +62,14 @@ export const assetService = {
     },
 
     playLetterSound(char: string) {
-        return this.playPcm(`/assets/audio/${char}.pcm`);
+        return this.playPcm(`${BASE_URL}assets/audio/${char}.pcm`);
+    },
+
+    playLetterWordSound(char: string) {
+        return this.playPcm(`${BASE_URL}assets/audio/${char}.pcm`);
     },
 
     playCommonSound(name: string) {
-        return this.playPcm(`/assets/common/${name}.pcm`);
+        return this.playPcm(`${BASE_URL}assets/common/${name}.pcm`);
     }
 };
