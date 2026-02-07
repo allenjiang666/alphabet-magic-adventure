@@ -43,6 +43,8 @@ const App: React.FC = () => {
   const quizQueueRef = useRef<string[]>(quizQueue);
   const quizFeedbackRef = useRef<'correct' | 'wrong' | null>(quizFeedback);
 
+  const latestTranscriptRef = useRef('');
+
   useEffect(() => { quizTargetRef.current = quizTarget; }, [quizTarget]);
   useEffect(() => { quizQueueRef.current = quizQueue; }, [quizQueue]);
   useEffect(() => { quizFeedbackRef.current = quizFeedback; }, [quizFeedback]);
@@ -121,31 +123,16 @@ const App: React.FC = () => {
     recognition.maxAlternatives = 1;
     recognition.continuous = false;
 
-    recognition.onstart = () => setIsListening(true);
-    recognition.onend = () => {
-      setIsListening(false);
+    recognition.onstart = () => {
+      setIsListening(true);
+      latestTranscriptRef.current = '';
     };
 
-    recognition.onresult = (event: any) => {
-      let interimTranscript = '';
-      let finalTranscript = '';
+    recognition.onend = () => {
+      setIsListening(false);
 
-      for (let i = event.resultIndex; i < event.results.length; i++) {
-        const transcriptPart = event.results[i][0].transcript.toLowerCase().trim().replace(/[.?!]/g, "");
-        if (event.results[i].isFinal) {
-          finalTranscript = transcriptPart;
-        } else {
-          interimTranscript = transcriptPart;
-        }
-      }
-
-      const transcript = (finalTranscript || interimTranscript).toLowerCase().trim();
-      if (transcript) {
-        setSpeechTranscript(transcript);
-      }
-
-      // If we already have feedback, don't re-process
-      if (quizFeedbackRef.current) return;
+      const transcript = latestTranscriptRef.current;
+      if (!transcript || quizFeedbackRef.current) return;
 
       const target = quizTargetRef.current;
       const currentQueue = quizQueueRef.current;
@@ -186,7 +173,7 @@ const App: React.FC = () => {
 
       const words = transcript.split(/\s+/);
 
-      // Better matching: Check if the whole transcript contains the target word 
+      // Better matching: Check if the whole transcript contains the target word
       // or if any word matches the letter/aliases
       const hasWordMatch = transcript.includes(targetWord);
 
@@ -223,6 +210,26 @@ const App: React.FC = () => {
       } else {
         setQuizFeedback('wrong');
         setTimeout(() => setQuizFeedback(null), 1500);
+      }
+    };
+
+    recognition.onresult = (event: any) => {
+      let interimTranscript = '';
+      let finalTranscript = '';
+
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const transcriptPart = event.results[i][0].transcript.toLowerCase().trim().replace(/[.?!]/g, "");
+        if (event.results[i].isFinal) {
+          finalTranscript = transcriptPart;
+        } else {
+          interimTranscript = transcriptPart;
+        }
+      }
+
+      const transcript = (finalTranscript || interimTranscript).toLowerCase().trim();
+      if (transcript) {
+        setSpeechTranscript(transcript);
+        latestTranscriptRef.current = transcript;
       }
     };
 
