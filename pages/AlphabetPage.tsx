@@ -39,6 +39,7 @@ const AlphabetPage: React.FC<AlphabetPageProps> = ({ onBack }) => {
     // Win Modal State
     const [showWinModal, setShowWinModal] = useState(false);
     const [winMessage, setWinMessage] = useState('');
+    const [winVideoUrl, setWinVideoUrl] = useState<string | undefined>(undefined);
     const quizTargetRef = useRef<LetterInfo | null>(quizTarget);
     const quizQueueRef = useRef<string[]>(quizQueue);
     const quizFeedbackRef = useRef<'correct' | 'wrong' | null>(quizFeedback);
@@ -188,6 +189,7 @@ const AlphabetPage: React.FC<AlphabetPageProps> = ({ onBack }) => {
                     const nextQueue = currentQueue.slice(1);
                     if (nextQueue.length === 0) {
                         setWinMessage("Amazing! You said all the letters!");
+                        setWinVideoUrl('/assets/common/elsa_congratulation.mp4');
                         setShowWinModal(true);
                         assetService.playCommonSound('win_speak');
                         setState(prev => ({ ...prev, mode: GameMode.EXPLORE }));
@@ -255,6 +257,7 @@ const AlphabetPage: React.FC<AlphabetPageProps> = ({ onBack }) => {
                 const nextQueue = quizQueue.slice(1);
                 if (nextQueue.length === 0) {
                     setWinMessage("Yay! You finished all letters!");
+                    setWinVideoUrl(undefined);
                     setShowWinModal(true);
                     assetService.playCommonSound('win_listen');
                     setState(prev => ({ ...prev, mode: GameMode.EXPLORE }));
@@ -390,6 +393,7 @@ const AlphabetPage: React.FC<AlphabetPageProps> = ({ onBack }) => {
                 show={showWinModal}
                 onClose={() => setShowWinModal(false)}
                 message={winMessage}
+                winVideo={winVideoUrl}
             />
         </div>
     );

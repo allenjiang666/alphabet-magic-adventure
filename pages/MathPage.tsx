@@ -38,6 +38,7 @@ const MathPage: React.FC<MathPageProps> = ({ onBack }) => {
     // Win Modal State
     const [showWinModal, setShowWinModal] = useState(false);
     const [winMessage, setWinMessage] = useState('');
+    const [winVideoUrl, setWinVideoUrl] = useState<string | undefined>(undefined);
     const quizTargetRef = useRef<NumberInfo | null>(quizTarget);
     const quizQueueRef = useRef<number[]>(quizQueue);
     const quizFeedbackRef = useRef<'correct' | 'wrong' | null>(quizFeedback);
@@ -155,6 +156,7 @@ const MathPage: React.FC<MathPageProps> = ({ onBack }) => {
                     const nextQueue = currentQueue.slice(1);
                     if (nextQueue.length === 0) {
                         setWinMessage("Incredible! You counted all the numbers!");
+                        setWinVideoUrl('/assets/common/elsa_congratulation.mp4');
                         setShowWinModal(true);
                         assetService.playCommonSound('win_speak');
                         setState(prev => ({ ...prev, mode: GameMode.EXPLORE }));
@@ -214,6 +216,7 @@ const MathPage: React.FC<MathPageProps> = ({ onBack }) => {
                 const nextQueue = quizQueue.slice(1);
                 if (nextQueue.length === 0) {
                     setWinMessage("Yay! You got all numbers right!");
+                    setWinVideoUrl(undefined);
                     setShowWinModal(true);
                     assetService.playCommonSound('win_listen');
                     setState(prev => ({ ...prev, mode: GameMode.EXPLORE }));
@@ -373,6 +376,7 @@ const MathPage: React.FC<MathPageProps> = ({ onBack }) => {
                 show={showWinModal}
                 onClose={() => setShowWinModal(false)}
                 message={winMessage}
+                winVideo={winVideoUrl}
             />
         </div>
     );
