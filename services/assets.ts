@@ -42,6 +42,10 @@ export const assetService = {
         return `${BASE_URL}assets/common/${name}.png`;
     },
 
+    getCommonVideoPath(name: string, ext = 'mp4'): string {
+        return `${BASE_URL}assets/common/${name}.${ext}`;
+    },
+
     async playPcm(url: string): Promise<void> {
         try {
             const response = await fetch(url);

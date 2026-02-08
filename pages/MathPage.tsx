@@ -156,7 +156,7 @@ const MathPage: React.FC<MathPageProps> = ({ onBack }) => {
                     const nextQueue = currentQueue.slice(1);
                     if (nextQueue.length === 0) {
                         setWinMessage("Incredible! You counted all the numbers!");
-                        setWinVideoUrl('/assets/common/elsa_congratulation.mp4');
+                        setWinVideoUrl(assetService.getCommonVideoPath('elsa_congratulation'));
                         setShowWinModal(true);
                         assetService.playCommonSound('win_speak');
                         setState(prev => ({ ...prev, mode: GameMode.EXPLORE }));
