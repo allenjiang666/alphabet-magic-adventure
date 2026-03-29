@@ -66,13 +66,13 @@ const AddingGamePage: React.FC<AddingGamePageProps> = ({ onBack }) => {
                 </svg>
             </button>
 
-            <div className="flex-1 flex flex-col items-center justify-start pt-12 md:pt-16 px-4 pb-6 overflow-hidden h-full">
+            <div className="flex-1 flex flex-col items-center justify-start pt-12 md:pt-16 px-4 pb-6 overflow-y-auto overflow-x-hidden h-full">
                 
                 {/* Main Content Area (Wheel + Path) */}
-                <div className="w-full flex-1 flex flex-col xl:flex-row items-center justify-center min-h-0 z-0 px-2 lg:px-4 pb-2 gap-6 xl:gap-12">
+                <div className="w-full flex-1 flex flex-col lg:flex-row items-center justify-center min-h-0 z-0 px-2 lg:px-4 pb-2 gap-6 lg:gap-12">
                     
                     {/* Left Side: Header & Lottery Wheel */}
-                    <div className="flex-shrink-0 flex flex-col items-center justify-center z-50 order-2 xl:order-1 gap-4 md:gap-8">
+                    <div className="flex-shrink-0 flex flex-col items-center justify-center z-50 order-2 lg:order-1 gap-4 md:gap-8 mt-8 lg:mt-0">
                         {/* Header */}
                         <div className="text-center shrink-0 z-10">
                             <h1 className="text-4xl md:text-5xl lg:text-6xl font-kids text-green-500 drop-shadow-sm">Number Path</h1>
@@ -87,7 +87,7 @@ const AddingGamePage: React.FC<AddingGamePageProps> = ({ onBack }) => {
                     </div>
 
                     {/* Right Side: The Path Grid */}
-                    <div className="w-full flex-1 flex flex-col items-center justify-center max-w-6xl order-1 xl:order-2 h-full pt-20 md:pt-28 xl:pt-16">
+                    <div className="w-full flex-1 flex flex-col items-center justify-center max-w-6xl order-1 lg:order-2 h-full pt-16 md:pt-20 lg:pt-16 min-h-0 shrink-0 lg:shrink">
                         <div 
                             className="grid grid-cols-10 grid-rows-[repeat(11,minmax(0,1fr))] w-full mx-auto relative" 
                         style={{ 
