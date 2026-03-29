@@ -109,7 +109,9 @@ async function generateAudio(char: string, word: string, force = false) {
 async function generateCommonAssets(force = false) {
     const commonSounds = [
         { name: 'win_listen', text: "Great job! You finished all the letters. You are a superstar!" },
-        { name: 'win_speak', text: "Yay! You are amazing! You said all the letters. You get a trophy!" }
+        { name: 'win_speak', text: "Yay! You are amazing! You said all the letters. You get a trophy!" },
+        { name: 'cheer', text: "Yay! Good Job!" },
+        { name: 'try_again', text: "Oops! Let's try another one!" }
     ];
 
     for (const sound of commonSounds) {

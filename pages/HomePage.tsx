@@ -4,9 +4,10 @@ import React from 'react';
 interface HomePageProps {
     onSelectAlphabet: () => void;
     onSelectMath: () => void;
+    onSelectAddingGame: () => void;
 }
 
-const HomePage: React.FC<HomePageProps> = ({ onSelectAlphabet, onSelectMath }) => {
+const HomePage: React.FC<HomePageProps> = ({ onSelectAlphabet, onSelectMath, onSelectAddingGame }) => {
     return (
         <div className="h-full w-full flex flex-col items-center justify-center p-8 bg-[#fdfcf0]">
             <div className="text-center mb-16 animate-in fade-in zoom-in duration-700">
@@ -18,7 +19,7 @@ const HomePage: React.FC<HomePageProps> = ({ onSelectAlphabet, onSelectMath }) =
                 </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 w-full max-w-4xl">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl">
                 {/* Alphabet Card */}
                 <button
                     onClick={onSelectAlphabet}
@@ -46,12 +47,29 @@ const HomePage: React.FC<HomePageProps> = ({ onSelectAlphabet, onSelectMath }) =
                         <div className="w-20 h-20 bg-blue-100 rounded-3xl flex items-center justify-center text-5xl mb-6 shadow-inner">
                             🔢
                         </div>
-                        <h2 className="text-4xl font-kids text-blue-600 mb-3">Math Magic</h2>
+                        <h2 className="text-4xl font-kids text-blue-600 mb-3">Number Magic</h2>
                         <p className="text-lg text-blue-900/50 font-kids leading-relaxed">
                             Master numbers and solve fun puzzles to become a math wizard!
                         </p>
                     </div>
                     <span className="absolute -bottom-10 -right-4 text-9xl font-kids text-blue-50 opacity-10 group-hover:opacity-20 transition-opacity">123</span>
+                </button>
+
+                {/* Adding Game Card */}
+                <button
+                    onClick={onSelectAddingGame}
+                    className="group relative bg-white rounded-[3rem] p-10 shadow-xl border-8 border-green-200 hover:border-green-400 transition-all transform hover:-translate-y-4 active:scale-95 text-left overflow-hidden"
+                >
+                    <div className="relative z-10">
+                        <div className="w-20 h-20 bg-green-100 rounded-3xl flex items-center justify-center text-5xl mb-6 shadow-inner">
+                            🎲
+                        </div>
+                        <h2 className="text-4xl font-kids text-green-600 mb-3">Number Path</h2>
+                        <p className="text-lg text-green-900/50 font-kids leading-relaxed">
+                            Spin the wheel, move your character, and reach 100!
+                        </p>
+                    </div>
+                    <span className="absolute -bottom-10 -right-4 text-9xl font-kids text-green-50 opacity-10 group-hover:opacity-20 transition-opacity">+</span>
                 </button>
             </div>
 

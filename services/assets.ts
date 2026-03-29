@@ -83,5 +83,62 @@ export const assetService = {
 
     playCommonSound(name: string) {
         return this.playPcm(`${BASE_URL}assets/common/${name}.pcm`);
+    },
+
+    playSimpleSound(type: 'correct' | 'wrong' | 'spin') {
+        try {
+            const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+            const gainNode = audioCtx.createGain();
+            gainNode.connect(audioCtx.destination);
+
+            if (type === 'correct') {
+                const osc = audioCtx.createOscillator();
+                osc.connect(gainNode);
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(500, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(1000, audioCtx.currentTime + 0.1);
+                gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+                osc.start(audioCtx.currentTime);
+                osc.stop(audioCtx.currentTime + 0.2);
+            } else if (type === 'wrong') {
+                const osc = audioCtx.createOscillator();
+                osc.connect(gainNode);
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.2);
+                gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+                osc.start(audioCtx.currentTime);
+                osc.stop(audioCtx.currentTime + 0.2);
+            } else if (type === 'spin') {
+                let time = audioCtx.currentTime;
+                // Generate slowing ticks to simulate wheel deceleration
+                for (let i = 0; i < 22; i++) {
+                    const osc = audioCtx.createOscillator();
+                    const tickGain = audioCtx.createGain();
+                    
+                    osc.connect(tickGain);
+                    tickGain.connect(gainNode);
+                    
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(800 - (i * 15), time);
+                    osc.frequency.exponentialRampToValueAtTime(100, time + 0.05);
+                    
+                    tickGain.gain.setValueAtTime(0, time);
+                    tickGain.gain.linearRampToValueAtTime(0.15, time + 0.01);
+                    tickGain.gain.exponentialRampToValueAtTime(0.01, time + 0.05);
+
+                    osc.start(time);
+                    osc.stop(time + 0.05);
+                    
+                    // Interval increases gradually (starts fast, gets very slow)
+                    const interval = 0.03 + (i * i * 0.0006);
+                    time += interval;
+                }
+            }
+        } catch (error) {
+            console.error("Synthesized sound failed:", error);
+        }
     }
 };

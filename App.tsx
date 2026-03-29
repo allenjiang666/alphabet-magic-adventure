@@ -5,7 +5,8 @@ import { AppSection, GameMode, LetterCase, GameState } from './types';
 // Pages
 import HomePage from './pages/HomePage';
 import AlphabetPage from './pages/AlphabetPage';
-import MathPage from './pages/MathPage';
+import NumberPage from './pages/NumberPage';
+import AddingGamePage from './pages/AddingGamePage';
 
 // Shared Components
 import ReloadPrompt from './components/ReloadPrompt';
@@ -27,13 +28,16 @@ const App: React.FC = () => {
       case AppSection.ALPHABET:
         return <AlphabetPage onBack={() => goToSection(AppSection.HOME)} />;
       case AppSection.MATH:
-        return <MathPage onBack={() => goToSection(AppSection.HOME)} />;
+        return <NumberPage onBack={() => goToSection(AppSection.HOME)} />;
+      case AppSection.ADDING_GAME:
+        return <AddingGamePage onBack={() => goToSection(AppSection.HOME)} />;
       case AppSection.HOME:
       default:
         return (
           <HomePage
             onSelectAlphabet={() => goToSection(AppSection.ALPHABET)}
             onSelectMath={() => goToSection(AppSection.MATH)}
+            onSelectAddingGame={() => goToSection(AppSection.ADDING_GAME)}
           />
         );
     }

@@ -2,7 +2,7 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import { NUMBERS } from '../constants';
-import { NumberInfo, GameMode, GameState, LetterCase } from '../types';
+import { NumberInfo, LetterInfo, GameMode, GameState, LetterCase } from '../types';
 import { assetService } from '../services/assets';
 
 // Components
@@ -10,11 +10,11 @@ import QuizGame from '../components/QuizGame';
 import SpeechChallenge from '../components/SpeechChallenge';
 import WinModal from '../components/WinModal';
 
-interface MathPageProps {
+interface NumberPageProps {
     onBack: () => void;
 }
 
-const MathPage: React.FC<MathPageProps> = ({ onBack }) => {
+const NumberPage: React.FC<NumberPageProps> = ({ onBack }) => {
     const [state, setState] = useState<GameState>({
         currentLetter: (null as any),
         currentNumber: null,
@@ -382,4 +382,4 @@ const MathPage: React.FC<MathPageProps> = ({ onBack }) => {
     );
 };
 
-export default MathPage;
+export default NumberPage;

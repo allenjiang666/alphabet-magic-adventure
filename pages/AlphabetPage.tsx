@@ -2,7 +2,7 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import { ALPHABET } from '../constants';
-import { LetterInfo, GameMode, GameState, LetterCase } from '../types';
+import { LetterInfo, NumberInfo, GameMode, GameState, LetterCase } from '../types';
 import { assetService } from '../services/assets';
 
 // Components

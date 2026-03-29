@@ -16,7 +16,6 @@ export interface NumberInfo {
 export enum GameMode {
   EXPLORE = 'EXPLORE',
   QUIZ = 'QUIZ',
-  MAGIC_DRAW = 'MAGIC_DRAW',
   SPEECH_CHALLENGE = 'SPEECH_CHALLENGE',
   MATH = 'MATH'
 }
@@ -24,7 +23,8 @@ export enum GameMode {
 export enum AppSection {
   HOME = 'HOME',
   ALPHABET = 'ALPHABET',
-  MATH = 'MATH'
+  MATH = 'MATH',
+  ADDING_GAME = 'ADDING_GAME'
 }
 
 export enum LetterCase {
